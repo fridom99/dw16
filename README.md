@@ -1,9 +1,3 @@
-md : markdown
+# Projet DW16
 
-# titre
-
-## sous-titre
-
-```php 
-echo 'toto';
-``` 
+- V1.0 (30/12/2021) : ajout de la fonctionnalité ...

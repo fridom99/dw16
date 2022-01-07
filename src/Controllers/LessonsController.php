@@ -55,6 +55,9 @@ class LessonsController extends Controller {
                 $model->add(array(
                     'libelle' => $libelle,
                 ));
+                // creer un message
+                FlashController::addFlash('La leçon ' . $libelle .' a été ajoutée');
+                $this->redirect('lessons');
             }
         
         }

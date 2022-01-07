@@ -21,6 +21,9 @@ use App\Controllers\Controller;
 require './vendor/autoload.php';
 
 define('ROOT', __DIR__);
+define('BASE_URL', 'http://localhost/projet/');
+
+session_start();
 
 /** trim() : supprimme les caractères `/` au début et à la fin du paramètre passé dans l'url */
 $request = trim($_GET['p'], '/');
@@ -68,5 +71,4 @@ if( method_exists( $controller, $action )) {
     $call->$action();
 } else {
     require ROOT . '/src/Views/404.php';
-
 }

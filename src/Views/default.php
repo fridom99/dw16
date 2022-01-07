@@ -13,6 +13,15 @@
         <h1>Template global</h1>
     </header>
     <hr>
+        <!-- Afficher les messages -->
+        <?php 
+            foreach( App\Controllers\FlashController::getFlash() as $message) {
+                ?>
+                    <p class="message"><?= $message; ?>
+                <?php
+            }
+        ?>
+    <hr>
     <div class="container">
 
         <?= $content; ?>

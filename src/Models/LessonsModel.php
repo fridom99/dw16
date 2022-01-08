@@ -20,8 +20,9 @@ class LessonsModel extends Model  {
 
     public function add(array $data) {
         $sql = "INSERT INTO {$this->table} (libelle) VALUES (:libelle)";
-        $requete = $this->getInstance()->prepare($sql);
-        $requete->execute($data);
+        // $requete = $this->getInstance()->prepare($sql);
+        // $requete->execute($data);
+        return $this->request($sql, $data );
     }
 
 }

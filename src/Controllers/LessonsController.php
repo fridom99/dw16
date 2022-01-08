@@ -43,14 +43,14 @@ class LessonsController extends Controller {
             extract($_POST);
 
             /* Vérification des donées saisies */
-            if(empty($libelle)) { $messages[] = "Le libellé est obligatoire"; }
+            if(empty($libelle)) { FlashController::addFlash("Le libellé est obligatoire", 'danger'); }
             // autres vérifications
             
             $libelle = htmlentities(strip_tags($libelle));
             
             /* Fin vérification des donées saisies */
 
-            if(empty($messages)) {
+            if(empty($_SESSION['messages'])) {
                 $model = new LessonsModel();
                 $model->add(array(
                     'libelle' => $libelle,

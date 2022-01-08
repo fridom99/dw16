@@ -3,9 +3,12 @@ namespace App\Controllers;
 
 class FlashController {
     
-    public static function addFlash($texte) {
+    public static function addFlash(string $texte, string $type="success") {
 
-        $_SESSION['messages'][] = $texte;
+        $_SESSION['messages'][] = array(
+            'texte' => $texte,
+            'type'=> $type
+        );
 
     }
 
@@ -20,8 +23,7 @@ class FlashController {
         // $messages = expression ? si true : si false;
         $messages = !empty($_SESSION['messages']) ? $_SESSION['messages'] : array(); // Structure ternaire
 
-        // depuis php 8
-        // "covalescence" nulle
+        // depuis php 8 : opérateur Null coalescent 
         // $messages = $_SESSION['messages'] ?? 'valeur'
        
         unset($_SESSION['messages']);

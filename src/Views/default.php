@@ -33,6 +33,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?= BASE_URL; ?>users">Users</a>
                     </li>
+                    <li class="nav-item">
+                        <?php if(App\Controllers\ConnexionController::logged_user()) : ?>
+                            <a class="nav-link" href="<?= BASE_URL; ?>logout">Déconnexion</a>
+                        <?php else: ?>
+                            <a class="nav-link" href="<?= BASE_URL; ?>login">Connexion</a>
+                        <?php endif; ?>
+                    </li>
+
                 </ul>
             </div>
         </div>

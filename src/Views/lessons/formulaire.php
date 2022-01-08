@@ -1,9 +1,5 @@
 <h1>Ajouter une leçon</h1>
 
-<?php foreach($messages as $message): ?>
-    <p><?= $message; ?>
-<?php endforeach; ?>
-
 <form action="" method="POST">
 
     <div class="form-group row mt-4">

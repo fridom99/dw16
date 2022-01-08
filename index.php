@@ -24,7 +24,6 @@ require './vendor/autoload.php';
 define('ROOT', __DIR__);
 define('BASE_URL', 'http://localhost/projet/');
 
-session_start();
 
 /** trim() : supprimme les caractères `/` au début et à la fin du paramètre passé dans l'url */
 $request = trim($_GET['p'], '/');
@@ -108,6 +107,7 @@ if(!isset($controller)) {
  * => la page demandée n'existe pas
  */
 if( method_exists( $controller, $action )) {
+    session_start();
     $call = new $controller();
     $call->$action($parametres);
 } else {

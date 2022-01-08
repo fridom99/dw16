@@ -1,6 +1,7 @@
 <?php 
 
 use App\Controllers\Controller;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Ce script tient lieu de router pour l'application.
@@ -28,37 +29,77 @@ session_start();
 /** trim() : supprimme les caractères `/` au début et à la fin du paramètre passé dans l'url */
 $request = trim($_GET['p'], '/');
 
-/** 
- * Transforme la chaîne en tableau :
- * string : controller/action/param
- * array  : 
- *  0   =>  controller
- *  1   =>  action
- *  2   =>  param
+/**
+ * Utilisation de routes spécifiques à partir d'un fichier de configuration :
  */
-$params = explode( '/', $request );
 
-/** 
- * Si le premier paramètre est vide 
- * => url = http://localhost/
- * => c'est la page d'accueil 
- */
-if(empty($params[0])) {
-    $controller = "App\\Controllers\\HomeController";
-} else {
-    $controller = "App\\Controllers\\" . ucfirst($params[0]) . 'Controller';
+/** soit un tableau php */
+// if( file_exists(ROOT . '/config/routes.php')) {
+//     require ROOT . '/config/routes.php';
+//     if(isset($routes[$request])) {
+//         $controller = 'App\\Controllers\\' . ucfirst($routes[$request]['controller']) . 'Controller';
+//         $action     = $routes[$request]['action'];
+//         $parametres = array();
+//     }
+// }
+
+/* soit un fichier yaml */
+if( file_exists(ROOT . '/config/routes.yaml')) {
+    $routes = Yaml::parseFile( ROOT . '/config/routes.yaml');
+    if(isset($routes[$request])) {
+        $controller = 'App\\Controllers\\' . ucfirst($routes[$request]['controller']) . 'Controller';
+        $action     = $routes[$request]['action'];
+        $parametres = array();
+    }
+} 
+
+if(!isset($controller)) {
+
+    /**
+     * La route n'a pas été trouvée dans le fichier de configuration => on utilise le schéma /controller/action/paramètre
+     */
+
+
+    /** 
+     * Transforme la chaîne en tableau :
+     * string : controller/action/param
+     * array  : 
+     *  0   =>  controller
+     *  1   =>  action
+     *  2   =>  param
+     */
+    $params = explode( '/', $request );
+
+    /** 
+     * Si le premier paramètre est vide 
+     * => url = http://localhost/
+     * => c'est la page d'accueil 
+     */
+    if(empty($params[0])) {
+        $controller = "App\\Controllers\\HomeController";
+    } else {
+        $controller = "App\\Controllers\\" . ucfirst($params[0]) . 'Controller';
+    }
+
+    /** 
+     * Si le deuxième paramètre est vide 
+     * => url = http://localhost/controller
+     * => on attribue une action "par défaut" (par exemple la liste des entités) 
+     */
+    if(empty($params[1])) {
+        $action = 'index';
+    } else {
+        $action = $params[1]; 
+    }
+
+    /**
+     * Les autres paramètres sont dans le tableau $params à partir de l'indice 2
+     * array_slice($tableau, 2) extrait dans un tableau les éléments à partir de l'indice 2 
+     */
+    $parametres = array_slice($params,2);
+
 }
 
-/** 
- * Si le deuxième paramètre est vide 
- * => url = http://localhost/controller
- * => on attribue une action "par défaut" (par exemple la liste des entités) 
- */
-if(empty($params[1])) {
-    $action = 'index';
-} else {
-    $action = $params[1]; 
-}
 
 /**
  * On vérifie que la méthode (action) existe pour le controller
@@ -68,7 +109,7 @@ if(empty($params[1])) {
  */
 if( method_exists( $controller, $action )) {
     $call = new $controller();
-    $call->$action();
+    $call->$action($parametres);
 } else {
     require ROOT . '/src/Views/404.php';
 }

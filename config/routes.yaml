@@ -1,0 +1,6 @@
+login:
+  controller: connexion
+  action: login
+logout:
+  controller: connexion
+  action: logout

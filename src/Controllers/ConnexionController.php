@@ -5,7 +5,7 @@ class ConnexionController extends Controller {
     
     public function login() {
 
-        
+        dump('ok');
 
 
     }

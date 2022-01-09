@@ -100,6 +100,11 @@ class LessonsController extends Controller {
                 ));
                 $lesson['libelle'] = $libelle;
                 $lesson['resume'] = $resume;
+
+                FlashController::addFlash("La leçon a été mise à jour", 'success');
+                $this->redirect('lessons');
+
+
             }
         }
 

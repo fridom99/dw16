@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group row mt-4">
-        <label for="categorie" class="col-sm-2 col-form-label">Catéroie</label>
+        <label for="categorie" class="col-sm-2 col-form-label">Catégorie</label>
         <div class="col-sm-10">
             <select name="categorie" id="categorie">
                 <option value=""></option>

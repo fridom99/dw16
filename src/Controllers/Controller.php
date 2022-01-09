@@ -30,7 +30,9 @@ abstract class Controller {
 
     /** A détailler */
     public function redirect($destination) {
-        header('Location: ' . $destination );
+        // header('Location: http://localhost/projet/' . $destination );
+        header('Location: ' . BASE_URL .$destination );
+        exit;
     }
     
 }

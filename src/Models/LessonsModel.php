@@ -19,9 +19,15 @@ class LessonsModel extends Model  {
      */
 
     public function add(array $data) {
-        $sql = "INSERT INTO {$this->table} (libelle) VALUES (:libelle)";
-        $requete = $this->getInstance()->prepare($sql);
-        $requete->execute($data);
+        $sql = "INSERT INTO {$this->table} (libelle, resume, id_categorie) VALUES (:libelle, :resume, :categorie)";
+        // $requete = $this->getInstance()->prepare($sql);
+        // $requete->execute($data);
+        return $this->request($sql, $data );
+    }
+
+    public function update(array $data) {
+        $sql = "UPDATE {$this->table} SET libelle = :libelle, resume = :resume, id_categorie = :categorie WHERE id = :id";
+        return $this->request($sql, $data );
     }
 
 }

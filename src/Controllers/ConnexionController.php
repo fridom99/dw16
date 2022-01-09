@@ -24,7 +24,7 @@ class ConnexionController extends Controller {
                         'id'    =>  $users[0]['id'],
                         'role'  =>  $user[0]['role'],
                     );
-                    $this->redirect('lessons');
+                    $this->redirect('users/profil');
                 }
             }
         }

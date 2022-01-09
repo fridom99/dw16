@@ -36,6 +36,8 @@ class LessonsController extends Controller {
     /** Ajoute une lesson dans la BDD  */
     public function add() {
 
+        if(!ConnexionController::logged_user()) { $this->redirect('login'); }
+
         $messages=[];
 
         if($_SERVER['REQUEST_METHOD']=='POST') {

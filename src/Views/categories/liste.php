@@ -10,7 +10,13 @@
             <tr>
                 <td scope="row"><?= $categorie['id']; ?></td>
                 <td><?= $categorie['libelle']; ?></td>
-                <td></td>
+                <td>
+                    <a href=""><i class="far fa-eye btn btn-info"></i></a>
+                    &nbsp;
+                    <a href=""><i class="fas fa-pencil-alt btn btn-warning"></i></a>
+                    &nbsp;
+                    <a href=""><i class="far fa-trash-alt btn btn-danger"></i></a>
+                </td>
             </tr>
         <?php endforeach; ?>
     </tbody>

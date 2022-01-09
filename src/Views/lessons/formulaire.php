@@ -15,6 +15,18 @@
     </div>
 
     <div class="form-group row mt-4">
+        <label for="categorie" class="col-sm-2 col-form-label">Catéroie</label>
+        <div class="col-sm-10">
+            <select name="categorie" id="categorie">
+                <option value=""></option>
+                <?php foreach($categories as $categorie) : ?>
+                    <option value="<?= $categorie['id']; ?>" <?= $categorie['id'] == $id_categorie ? "selected" : ''; ?>><?= $categorie['libelle']; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row mt-4">
         <label for="resume" class="col-sm-2 col-form-label">Résumé</label>
         <div class="col-sm-10">
             <textarea class="form-control" id="resume" name="resume"><?= !empty($lesson['resume']) ? $lesson['resume'] : ''; ?></textarea>

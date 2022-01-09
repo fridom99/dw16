@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\LessonsModel;
 use App\Controllers\Controller;
+use App\Models\CategoriesModel;
 
 /**
  * Controller spécialisé chargé de traiter les requêtes relatives aux lessons
@@ -36,7 +37,9 @@ class LessonsController extends Controller {
     public function show($id) {
         $model = new LessonsModel();
         $lesson = $model->find($id)->fetch();
-        $this->render('lessons/fiche', array('lesson' => $lesson));
+        $modelCategories = new CategoriesModel();
+        $categorie = $modelCategories->find($lesson['id_categorie'])->fetch();;
+        $this->render('lessons/fiche', array('lesson' => $lesson, 'categorie'=>$categorie['libelle']));
     }
 
     /** Ajoute une lesson dans la BDD  */
@@ -44,7 +47,8 @@ class LessonsController extends Controller {
 
         if(!ConnexionController::logged_user()) { $this->redirect('login'); }
 
-        
+        $modelCategories = new CategoriesModel();
+        $categories = $modelCategories->findAll()->fetchAll(); 
 
         if($_SERVER['REQUEST_METHOD']=='POST') {
 
@@ -53,6 +57,8 @@ class LessonsController extends Controller {
             /* Vérification des donées saisies */
             if(empty($libelle)) { FlashController::addFlash("Le libellé est obligatoire", 'danger'); }
             if(empty($resume)) { FlashController::addFlash("Le résumé est obligatoire", 'danger'); }
+            if(empty($categorie)) { FlashController::addFlash("La catégorie est obligatoire", 'danger'); }
+
 
             // autres vérifications
             
@@ -63,8 +69,9 @@ class LessonsController extends Controller {
             if(empty($_SESSION['messages'])) {
                 $model = new LessonsModel();
                 $model->add(array(
-                    'libelle'   =>  $libelle,
-                    'resume'    =>  $resume,
+                    'libelle'       =>  $libelle,
+                    'resume'        =>  $resume,
+                    'categorie'     =>  $categorie,
                 ));
                 // creer un message
                 FlashController::addFlash('La leçon ' . $libelle .' a été ajoutée');
@@ -74,8 +81,10 @@ class LessonsController extends Controller {
         }
         
         $this->render('lessons/formulaire', array(
-            'lesson'    =>  $_POST,
-            'mode'      =>  'ajout',
+            'lesson'        =>  $_POST,
+            'categories'    =>  $categories,
+            'id_categorie'     =>  isset($_POST['categorie']) ? $_POST['categorie'] : null,
+            'mode'          =>  'ajout',
         ));
 
     }
@@ -84,12 +93,16 @@ class LessonsController extends Controller {
         $model = new LessonsModel();
         $lesson = $model->find($id)->fetch();
 
+        $modelCategories = new CategoriesModel();
+        $categories = $modelCategories->findAll()->fetchAll(); 
+
         if($_SERVER['REQUEST_METHOD']=='POST') {
 
             extract($_POST);
 
             if(empty($libelle)) { FlashController::addFlash("Le libelle est obligatoire", 'danger'); }
             if(empty($resume)) { FlashController::addFlash("Le résumé est obligatoire", 'danger'); }
+            if(empty($categorie)) { FlashController::addFlash("La catégorie est obligatoire", 'danger'); }
 
             if(empty($_SESSION['messages'])) {
                 // nettoyage
@@ -97,6 +110,7 @@ class LessonsController extends Controller {
                     'id'        =>  $id,
                     'libelle'   =>  $libelle,
                     'resume'    =>  $resume,
+                    'categorie' =>  $categorie,
                 ));
                 $lesson['libelle'] = $libelle;
                 $lesson['resume'] = $resume;
@@ -104,14 +118,14 @@ class LessonsController extends Controller {
                 FlashController::addFlash("La leçon a été mise à jour", 'success');
                 $this->redirect('lessons');
 
-
             }
         }
 
-        
         $this->render('lessons/formulaire', array(
-            'lesson'    =>  $lesson,
-            'mode'      =>  'modif',
+            'lesson'        =>  $lesson,
+            'categories'    =>  $categories,
+            'id_categorie'  =>  $lesson['id_categorie'],
+            'mode'          =>  'modif',
         ));
 
     }

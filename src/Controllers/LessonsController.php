@@ -33,12 +33,18 @@ class LessonsController extends Controller {
         
     }
 
+    public function show($id) {
+        $model = new LessonsModel();
+        $lesson = $model->find($id)->fetch();
+        $this->render('lessons/fiche', array('lesson' => $lesson));
+    }
+
     /** Ajoute une lesson dans la BDD  */
     public function add() {
 
         if(!ConnexionController::logged_user()) { $this->redirect('login'); }
 
-        $messages=[];
+        
 
         if($_SERVER['REQUEST_METHOD']=='POST') {
 
@@ -46,6 +52,8 @@ class LessonsController extends Controller {
 
             /* Vérification des donées saisies */
             if(empty($libelle)) { FlashController::addFlash("Le libellé est obligatoire", 'danger'); }
+            if(empty($resume)) { FlashController::addFlash("Le résumé est obligatoire", 'danger'); }
+
             // autres vérifications
             
             $libelle = htmlentities(strip_tags($libelle));
@@ -55,7 +63,8 @@ class LessonsController extends Controller {
             if(empty($_SESSION['messages'])) {
                 $model = new LessonsModel();
                 $model->add(array(
-                    'libelle' => $libelle,
+                    'libelle'   =>  $libelle,
+                    'resume'    =>  $resume,
                 ));
                 // creer un message
                 FlashController::addFlash('La leçon ' . $libelle .' a été ajoutée');
@@ -65,13 +74,48 @@ class LessonsController extends Controller {
         }
         
         $this->render('lessons/formulaire', array(
-            'messages' => $messages,
+            'lesson'    =>  $_POST,
+            'mode'      =>  'ajout',
         ));
 
     }
 
-    public function show() {
-        echo __METHOD__; 
+    public function modify($id) {
+        $model = new LessonsModel();
+        $lesson = $model->find($id)->fetch();
+
+        if($_SERVER['REQUEST_METHOD']=='POST') {
+
+            extract($_POST);
+
+            if(empty($libelle)) { FlashController::addFlash("Le libelle est obligatoire", 'danger'); }
+            if(empty($resume)) { FlashController::addFlash("Le résumé est obligatoire", 'danger'); }
+
+            if(empty($_SESSION['messages'])) {
+                // nettoyage
+                $model->update(array(
+                    'id'        =>  $id,
+                    'libelle'   =>  $libelle,
+                    'resume'    =>  $resume,
+                ));
+                $lesson['libelle'] = $libelle;
+                $lesson['resume'] = $resume;
+            }
+        }
+
+        
+        $this->render('lessons/formulaire', array(
+            'lesson'    =>  $lesson,
+            'mode'      =>  'modif',
+        ));
+
+    }
+
+    public function remove($id) {
+        $model = new LessonsModel();
+        $model->delete($id);
+        FlashController::addFlash("La leçon a été supprimée", "success");
+        $this->redirect('lessons');
     }
 
 }

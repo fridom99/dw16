@@ -17,4 +17,9 @@ class CategoriesController extends Controller {
         ));
     }
 
+    public function show() {}
+    public function add() {}
+    public function modify() {}
+    public function remove() {}
+
 }

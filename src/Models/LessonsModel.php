@@ -25,4 +25,9 @@ class LessonsModel extends Model  {
         return $this->request($sql, $data );
     }
 
+    public function update(array $data) {
+        $sql = "UPDATE {$this->table} SET libelle = :libelle, resume = :resume WHERE id = :id";
+        return $this->request($sql, $data );
+    }
+
 }

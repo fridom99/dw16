@@ -94,8 +94,11 @@ if(!isset($controller)) {
     /**
      * Les autres paramètres sont dans le tableau $params à partir de l'indice 2
      * array_slice($tableau, 2) extrait dans un tableau les éléments à partir de l'indice 2 
+     * si un seul paramètre, on transmet le paramètre
+     * si plusieurs paramètres, on les transmet dans un tableau
      */
-    $parametres = array_slice($params,2);
+    $params = array_slice($params,2);
+    $parametres = count($params) == 1 ? $params[0] : $params;
 
 }
 

@@ -56,10 +56,9 @@ abstract class Model {
         return $this->request($sql, array( 'id' => $id ));
     }
 
-    /** Lignes correspondant à un critère */
-    public function findBy($key, $value) {
-        $sql = "SELECT * FROM {$this->table} WHERE $key = $value";
-        // ...
+    public function delete($id) {
+        $sql = "DELETE FROM {$this->table} WHERE id = :id";
+        return $this->request($sql, array( 'id' => $id));
     }
 
 }

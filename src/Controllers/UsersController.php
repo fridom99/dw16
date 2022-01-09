@@ -8,7 +8,7 @@ class UsersController extends Controller {
     
     public function index() {}
 
-    public function profil($param=array()) {
+    public function profil($id) {
 
         // if(empty($param[0])) {
         //     $id = $_SESSION['user']['id'];
@@ -17,7 +17,7 @@ class UsersController extends Controller {
         // }
 
         /** Sous la forme ternaire */
-        $id = empty($param[0]) ? $_SESSION['user']['id'] : $param[0];
+        $id = empty($id) ? $_SESSION['user']['id'] : $id;
 
         $model = new UsersModel();
         $result = $model->find($id);

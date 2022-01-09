@@ -11,11 +11,11 @@
                 <td scope="row"><?= $lesson['id']; ?></td>
                 <td><?= $lesson['libelle']; ?></td>
                 <td>
-                    <a href=""><i class="far fa-eye btn btn-info"></i></a>
+                    <a href="lessons/show/<?= $lesson['id']; ?>"><i class="far fa-eye btn btn-info"></i></a>
                     &nbsp;
-                    <a href=""><i class="fas fa-pencil-alt btn btn-warning"></i></a>
+                    <a href="lessons/modify/<?= $lesson['id']; ?>"><i class="fas fa-pencil-alt btn btn-warning"></i></a>
                     &nbsp;
-                    <a href=""><i class="far fa-trash-alt btn btn-danger"></i></a>
+                    <a href="lessons/remove/<?= $lesson['id']; ?>"><i class="far fa-trash-alt btn btn-danger"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>
